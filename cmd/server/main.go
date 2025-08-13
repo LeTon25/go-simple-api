@@ -1,13 +1,7 @@
 package main
 
-import "go-simple-api/internal/routers"
+import "go-simple-api/internal/initalize"
 
 func main() {
-	r := routers.NewRouter()
-
-	err := r.Run(":8080")
-
-	if err != nil {
-		panic(err)
-	}
+	initalize.RunProgram()
 }
