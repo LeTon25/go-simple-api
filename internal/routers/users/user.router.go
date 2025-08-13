@@ -1,14 +1,19 @@
 package routers_users
 
-import "github.com/gin-gonic/gin"
+import (
+	"go-simple-api/wire"
+
+	"github.com/gin-gonic/gin"
+)
 
 type UserRouter struct{}
 
 func (ur *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
+	userController, _ := wire.InitUserRouterHandler()
 	//public
 	userRouterPublic := Router.Group("/user")
 	{
-		userRouterPublic.GET("/register")
+		userRouterPublic.GET("/register", userController.Register)
 		userRouterPublic.GET("/detail/:id")
 	}
 
