@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import "go-simple-api/internal/routers"
 
 func main() {
-	fmt.Println("Hello World")
+	r := routers.NewRouter()
+
+	err := r.Run(":8080")
+
+	if err != nil {
+		panic(err)
+	}
 }
