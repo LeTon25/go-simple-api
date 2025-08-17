@@ -3,11 +3,11 @@ package initalize
 import (
 	"fmt"
 	"go-simple-api/global"
-	"go-simple-api/internal/po"
 	"time"
 
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
+	"gorm.io/gen"
 	"gorm.io/gorm"
 )
 
@@ -46,11 +46,25 @@ func SetPool() {
 
 func migrateTables() {
 	err := global.Mdb.AutoMigrate(
-		&po.User{},
-		&po.Role{},
+	//&model.GoUserV2
 	)
 
 	if err != nil {
 		return
 	}
+}
+
+func genTableDAO() {
+	g := gen.NewGenerator(gen.Config{
+		OutPath: "./internal/model",
+		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // generate mode
+	})
+
+	// gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+	g.UseDB(global.Mdb) // reuse your gorm db
+
+	g.GenerateAllTable()
+
+	// Generate the code
+	g.Execute()
 }
